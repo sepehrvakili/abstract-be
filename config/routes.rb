@@ -6,18 +6,14 @@ Rails.application.routes.draw do
   # root 'welcome#index'
 
 
-  post    'signup',  to: 'users#create'
-  post    'signin',  to: 'sessions#create'
+  post    'register',  to: 'users#create'
+  post    'login',     to: 'users#login'
+  post    'profiles',        to: 'profiles#create'
 
-  # get     'profile',  to: 'profiles#show'  
-  # post    'profile',  to: 'profiles#create'
+  get      'posts-public',    to: 'posts#public'
   
-  post     'posts-public',    to: 'posts#public'
-  post     'users/profiles',   to: 'profiles#public' 
-
   resources :users, except: [:new, :edit] do
     resources :posts
-    resources :profiles, except: [:index]
   end
 
   # get     'post',     to: 'posts#show'
