@@ -361,6 +361,7 @@ However, the front-end app can perform validation to ensure all fields relavent 
 | Form Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
 | post_type | string | ​*(Required)*​ the type of the post being created |
+| image | file |  ​*(Optional)*​  should be provided if user is creating `post_type` `image` |
 | title | string |  ​*(Optional)*​  should be provided if user is creating `post_type` `image` |
 | status | string | *(Optional)*​ should be provided if user is creating `post_type` `text` |
 | url | string | *(Optional)* should be provided if user is creating `post_type` `link` |
@@ -476,6 +477,7 @@ However, the front-end app can perform validation to ensure all fields relavent 
 
 | Form Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
+| image | file |  ​*(Optional)*​  should be provided if user is creating `post_type` `image` |
 | title | string |  ​*(Optional)*​  should be provided if user is creating `post_type` `image` |
 | status | string | *(Optional)*​ should be provided if user is creating `post_type` `text` |
 | url | string | *(Optional)* should be provided if user is creating `post_type` `link` |
