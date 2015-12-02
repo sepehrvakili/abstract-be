@@ -1,4 +1,4 @@
-# Abstract App API
+# Abstract App API :: O__O
 <hr>
 
 Welcome to the Abstract App API documentation. Abstract allows creators to inspire and to be inspired!
@@ -9,13 +9,13 @@ The url params are called Path parameters
 
 * [User Methods](#user-methods)
   * [Registration](#user-registration)
-  * [Login](#user-login)
-  * [Deletion](#user-delete)
-  * [Profile Retrieval](#user-retrieve)
-  * [All Profiles Retrieval](#users-retrieve)
+  * [Login] (#user-login)
+  * [Deletion] (#user-delete)
+  * [Profile Retrieval] (#user-retrieve)
+  * [All Profiles Retrieval] (#users-retrieve)
 
-* [Profile Methods](#profile-methods)
-  * [Creation](#profile-creation)
+* [Profile Methods] (#profile-methods)
+  * [Creation] (#profile-creation)
 
 
 ##<a name="user-methods"></a>User Methods
@@ -214,7 +214,7 @@ If unsuccessful, you will receive:
 
 ###<a name="users-retrieve"></a>All Users Profiles Retrieval
 
-This request will allow a user to retrieve profiles of all users, paginated, as long as an `Auth-Token` is provided. Each request will provide 20 profiles at most. Providing a `page` param will allow you to get consequent profiles.
+This request will allow a user to retrieve profiles of all users, paginated, as long as an `Auth-Token` is provided. Each request will provide 20 profiles at most. Providing a `page` param will allow you to get consequent profiles. For first 20 users `page` can be empty since default value is `1`. For second 20 users (eg. users 21-40) `page` should be `2` and so on.
 
 **URL** /users?page=1
 
@@ -328,4 +328,12 @@ If unsuccessful, you will receive:
   ]
 }
 ```
-O___O
+
+
+
+
+
+
+o____o
+
+
