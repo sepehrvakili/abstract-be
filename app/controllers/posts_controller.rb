@@ -31,7 +31,7 @@ class PostsController < ApplicationController
 		else
 			render json: { message: "User #{current_user.firstname} does not have access to this post." }, status: :unauthorized
 		end
-	end
+	end	
 
 	def destroy
 		post = Post.find(params[:id])
