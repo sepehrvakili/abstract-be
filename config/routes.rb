@@ -5,15 +5,19 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
-
   post    'register',  to: 'users#create'
   post    'login',     to: 'users#login'
-  post    'profiles',        to: 'profiles#create'
+  post    'profiles',  to: 'profiles#create'
 
-  get      'posts-public',    to: 'posts#public'
+  get      'posts/:id', to: 'posts#show'
+  put      'posts/:id', to: 'posts#update'
+  delete   'posts/:id', to: 'posts#destroy'
+  get      'posts',     to: 'posts#public'
+  post     'posts',     to: 'posts#create'
   
+
   resources :users, except: [:new, :edit] do
-    resources :posts
+    resources :posts, except: [:create, :show, :update, :delete]
   end
 
   # get     'post',     to: 'posts#show'
