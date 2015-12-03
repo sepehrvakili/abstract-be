@@ -53,14 +53,15 @@ class PostsController < ApplicationController
 
 	def public
 		@page = params[:page] || 1
+		@posts = Post.all.page(@page).per(20)
 		@total_pages = @posts.total_pages
-		@posts = build_posts(Post.all.page(@page).per(20))
+		@posts = build_posts(@posts)
 		render :index, status: :ok
 	end
 
 	private
   def post_params
-    params.permit(:post_type, :title, :url, :description, :status, :quote, :image)
+    params.permit(:post_type, :title, :url, :description, :status, :quote, :image, :tag_phrases)
   end
 
   def build_posts(posts)
@@ -77,6 +78,7 @@ class PostsController < ApplicationController
 				image_medium: post.image.url(:medium),
 				image_large: post.image.url(:large),
 				username: User.find(post.user_id).username,
+				tags: post.tag_phrases,
 				created_at: post.created_at,
 				updated_at: post.updated_at
 			}

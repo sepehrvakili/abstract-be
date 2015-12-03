@@ -15,7 +15,7 @@ class ProfilesController < ApplicationController
 	private
 
 	def profile_params
-    params.permit(:bio, :website, :location, :picture)
+    params.permit(:bio, :website, :location, :picture, :tag_phrases)
   end
 
 end

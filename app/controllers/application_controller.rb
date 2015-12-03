@@ -35,7 +35,8 @@ class ApplicationController < ActionController::Base
       picture_medium: profile.picture.url(:medium),
       picture_large: profile.picture.url(:large),
       profile_id: profile.id,
-      username: User.find(profile.user_id).username
+      username: User.find(profile.user_id).username,
+      tags: profile.tag_phrases
     }
   }
 end
