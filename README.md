@@ -15,14 +15,16 @@ The url params are called Path parameters
   * [Retrieve All Profiles] (#user-retrieve-all)
 
 * [Profile Methods] (#profile-methods)
-  * [Create] (#profile-creation)
+  * [Create] (#profile-create)
 
 * [Post Methods](#post-methods)
   * [Create](#post-creation)
-  * [Retrieve](#post-retrieve)
+  * [Retrieve One for One User](#post-retrieve)
+  * [Retrieve All for One User](#post-retrieve-all-per-user)
+  * [Retrieve All Posts](#post-retrieve-all)
   * [Update](#post-update)
   * [Delete](#post-delete)
-  * [Retrieve All Posts](#post-retrieve-all)
+
 
 ##<a name="user-methods"></a>User Methods
 
@@ -39,11 +41,11 @@ This request will create a new user in the system and return back an auth\_token
 
 | Form Params | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| firstname | String | *(Required)* User's first name
-| lastname | String | *(Required)* User's last name
-| username | String | *(Required)* User's username
-| email | String | ​*(Required)*​ Users email address, must follow the format text@text.text |
-| password    | String      |  ​*(Required)*​  password for the user |
+| firstname | String | *(required)* User's first name
+| lastname | String | *(required)* User's last name
+| username | String | *(required)* User's username
+| email | String | ​*(required)*​ Users email address, must follow the format text@text.text |
+| password    | String      |  ​*(required)*​  password for the user |
 
 
 **Response**
@@ -93,8 +95,8 @@ This request will allow an existing user in the system to send their username an
     
 | Form Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| username | String | ​*(Required)*​ existing user's username |
-| password | String |  ​*(Required)*​  password for the user |
+| username | String | ​*(required)*​ existing user's username |
+| password | String |  ​*(required)*​  password for the user |
 
 
 **Response**
@@ -141,7 +143,7 @@ This request will allow an existing user in the system to delete their account, 
     
 | Path Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| id | integer | ​*(Required)*​ the id of the user to be deleted |
+| id | integer | ​*(required)*​ the id of the user to be deleted |
 
 **Response**
 
@@ -293,10 +295,11 @@ This request will allow a user to create a profile immediately after signing up.
     
 | Form Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| picture | File | ​*(Required)*​ the user's profile image |
-| bio | String |  ​*(Required)*​  brief text bio of the user |
-| website | String | *(Required)* user's website url |
-| location | String | *(Required)* user's current location |
+| picture | File | ​*(required)*​ the user's profile image |
+| bio | String |  ​*(required)*​  brief text bio of the user |
+| website | String | *(required)* user's website url |
+| location | String | *(required)* user's current location |
+| tag_phrases | string | *(optional)* optional field, must return comma separated words |
 
 **Response**
 
@@ -342,31 +345,25 @@ This should be a dropdown field that is populated by the front-end app.
 
 This request will allow a user to create a post immediately after signing up. 
 
-**URL** /users/:user_id/posts
+**URL** /posts
 
 **Method** POST
 
 **Request**
-    
-    
-| Path Params       | Type           | Description  |
-| ------------- |:-------------:|:----- |
-| user_id | integer | ​*(Required)*​ the id of the user creating the post |
-
-**Note**
 
 Given that there is one Post model all fields are optional except `post_type`.
 However, the front-end app can perform validation to ensure all fields relavent to a selected post type are provided.
 
 | Form Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| post_type | string | ​*(Required)*​ the type of the post being created |
-| image | file |  ​*(Optional)*​  should be provided if user is creating `post_type` `image` |
-| title | string |  ​*(Optional)*​  should be provided if user is creating `post_type` `image` |
-| status | string | *(Optional)*​ should be provided if user is creating `post_type` `text` |
-| url | string | *(Optional)* should be provided if user is creating `post_type` `link` |
-| description | String | *(Optional)* should be provided if user is creating `post_type` `link` or `image` |
-| quote | string | *(Optional)* should be provided if user is creating `post_type` `quote` |
+| post_type | string | ​*(required)*​ the type of the post being created |
+| image | file |  ​*(optional)*​  should be provided if user is creating `post_type` `image` |
+| title | string |  ​*(optional)*​  should be provided if user is creating `post_type` `image` |
+| status | string | *(optional)*​ should be provided if user is creating `post_type` `text` |
+| url | string | *(optional)* should be provided if user is creating `post_type` `link` |
+| description | String | *(optional)* should be provided if user is creating `post_type` `link` or `image` |
+| quote | string | *(optional)* should be provided if user is creating `post_type` `quote` |
+| tag_phrases | string | *(optional)* optional field, must return comma separated words |
 
 **Response**
 
@@ -389,6 +386,7 @@ If successful, you will receive:
       "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
       "username": "sepehr",
+      "tags": "atlanta, polymorphic, multiple words phrase",
       "created_at": "2015-12-02T17:28:31.506Z",
       "updated_at": "2015-12-02T17:28:31.506Z"
     }
@@ -406,9 +404,9 @@ If unsuccessful, you will receive:
 }
 ```
 
-###<a name="post-retrieve"></a>Retrieve
+###<a name="post-retrieve"></a>Retrieve One Post For a User
 
-**URL** /users/:user_id/posts/:id
+**URL** /posts/:id
 
 **Method** GET
 
@@ -416,8 +414,8 @@ If unsuccessful, you will receive:
     
 | Path Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| user_id | integer | ​*(Required)*​ the id of the user whose post you're retrieving |
-| id | integer | ​*(Required)*​ the id of the post you're retrieving |
+| user_id | integer | ​*(required)*​ the id of the user whose post you're retrieving |
+| id | integer | ​*(required)*​ the id of the post you're retrieving |
 
 **Response**
 
@@ -440,6 +438,7 @@ If successful, you will receive:
       "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
       "username": "sepehr",
+      "tags": "atlanta, polymorphic, multiple words phrase",
       "created_at": "2015-12-02T17:28:31.506Z",
       "updated_at": "2015-12-02T17:28:31.506Z"
     }
@@ -457,107 +456,7 @@ If unsuccessful, you will receive:
 }
 ```
 
-###<a name="post-update"></a>Update
-
-**URL** /users/:user_id/posts/:id
-
-**Method** PUT
-
-**Request**
-    
-| Path Params       | Type           | Description  |
-| ------------- |:-------------:|:----- |
-| user_id | integer | ​*(Required)*​ the id of the user whose post you're retrieving |
-| id | integer | ​*(Required)*​ the id of the post you're retrieving |
-
-**Note**
-
-Given that there is one Post model all fields are optional except `post_type`.
-However, the front-end app can perform validation to ensure all fields relavent to a selected post type are provided.
-
-| Form Params       | Type           | Description  |
-| ------------- |:-------------:|:----- |
-| image | file |  ​*(Optional)*​  should be provided if user is creating `post_type` `image` |
-| title | string |  ​*(Optional)*​  should be provided if user is creating `post_type` `image` |
-| status | string | *(Optional)*​ should be provided if user is creating `post_type` `text` |
-| url | string | *(Optional)* should be provided if user is creating `post_type` `link` |
-| description | String | *(Optional)* should be provided if user is creating `post_type` `link` or `image` |
-| quote | string | *(Optional)* should be provided if user is creating `post_type` `quote` |
-
-**Response**
-
-If successful, you will receive:
-
-    Status Code: 200 - OK
-
-```json
-{
-  "post": [
-    {
-      "id": 1,
-      "post_type": "image",
-      "title": "The Beach",
-      "url": null,
-      "description": "Hello Beach",
-      "status": null,
-      "quote": null,
-      "image_thumb": "http://abstract-prod.s3.amazonaws.com/posts/thumb/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
-      "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
-      "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
-      "username": "sepehr",
-      "created_at": "2015-12-02T17:28:31.506Z",
-      "updated_at": "2015-12-02T17:28:31.506Z"
-    }
-  ]
-}
-```
-
-If unsuccessful, you will receive:
-
-    Status Code: 401 - Not Authorized
-    
-```json
-{
-  "error": "Could not authenticate with token: '89a9bad1bd2a5c7e2010b29dbc31a2f'"
-}
-```
-
-###<a name="post-delete"></a>Delete
-
-**URL** /users/:user_id/posts/:id
-
-**Method** DELETE
-
-**Request**
-    
-| Path Params       | Type           | Description  |
-| ------------- |:-------------:|:----- |
-| user_id | integer | ​*(Required)*​ the id of the user whose post you're retrieving |
-| id | integer | ​*(Required)*​ the id of the post you're retrieving |
-
-**Response**
-
-If successful, you will receive:
-
-    Status Code: 200 - OK
-
-```json
-{
-  "message": "My new post has been deleted."
-}
-```
-
-If unsuccessful, you will receive:
-
-    Status Code: 401 - Not Authorized
-    
-```json
-{
-  "message": "User Amit does not have access to this post."
-}
-```
-
-###<a name="post-retrieve-all"></a>Retrieve All Posts
+###<a name="post-retrieve-all-per-user"></a>Retrieve All Posts For a User
 
 **URL** /users/:user_id/posts
 
@@ -567,7 +466,58 @@ If unsuccessful, you will receive:
     
 | Path Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| user_id | integer | ​*(Required)*​ the id of the user whose post you're retrieving |
+| user_id | integer | ​*(required)*​ the id of the user whose post you're retrieving |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 202 - Accepted
+
+```json
+{
+  "post": [
+    {
+      "id": 1,
+      "post_type": "image",
+      "title": "The Beach",
+      "url": null,
+      "description": "Hello Beach",
+      "status": null,
+      "quote": null,
+      "image_thumb": "http://abstract-prod.s3.amazonaws.com/posts/thumb/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
+      "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
+      "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
+      "username": "sepehr",
+      "tags": "atlanta, polymorphic, multiple words phrase",
+      "created_at": "2015-12-02T17:28:31.506Z",
+      "updated_at": "2015-12-02T17:28:31.506Z"
+    }
+  ]
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 401 - Not Authorized
+    
+```json
+{
+  "error": "Could not authenticate with token: '89a9bad1bd2a5c7e2010b29dbc31a2f'"
+}
+```
+
+###<a name="post-retrieve-all"></a>Retrieve All Posts for All Users
+
+**URL** /users/:user_id/posts
+
+**Method** GET
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| user_id | integer | ​*(required)*​ the id of the user whose post you're retrieving |
 
 **Response**
 
@@ -592,6 +542,7 @@ If successful, you will receive:
       "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/007/juara_beach.jpg?1449085301",
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/007/juara_beach.jpg?1449085301",
       "username": "hootan",
+      "tags": "atlanta, polymorphic, multiple words phrase",
       "created_at": "2015-12-02T19:41:42.086Z",
       "updated_at": "2015-12-02T19:41:42.086Z"
     },
@@ -607,6 +558,7 @@ If successful, you will receive:
       "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/006/juara_beach.jpg?1449085294",
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/006/juara_beach.jpg?1449085294",
       "username": "hootan",
+      "tags": "atlanta, polymorphic, multiple words phrase",
       "created_at": "2015-12-02T19:41:34.861Z",
       "updated_at": "2015-12-02T19:41:34.861Z"
     },
@@ -621,6 +573,7 @@ If successful, you will receive:
       "image_thumb": "http://abstract-prod.s3.amazonaws.com/posts/thumb/000/000/003/juara_beach.jpg?1449084873",
       "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/003/juara_beach.jpg?1449084873",
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/003/juara_beach.jpg?1449084873",
+      "tags": "atlanta, polymorphic, multiple words phrase",
       "username": "hootan",
       "created_at": "2015-12-02T19:34:33.376Z",
       "updated_at": "2015-12-02T19:34:33.376Z"
@@ -639,6 +592,108 @@ If unsuccessful, you will receive:
 }
 ```
 
+###<a name="post-update"></a>Update
+
+**URL** /posts/:id
+
+**Method** PUT
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| user_id | integer | ​*(required)*​ the id of the user whose post you're retrieving |
+| id | integer | ​*(required)*​ the id of the post you're retrieving |
+
+**Note**
+
+Given that there is one Post model all fields are optional except `post_type`.
+However, the front-end app can perform validation to ensure all fields relavent to a selected post type are provided.
+
+| Form Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| post_type | string | ​*(required)*​ the type of the post being created |
+| image | file |  ​*(optional)*​  should be provided if user is creating `post_type` `image` |
+| title | string |  ​*(optional)*​  should be provided if user is creating `post_type` `image` |
+| status | string | *(optional)*​ should be provided if user is creating `post_type` `text` |
+| url | string | *(optional)* should be provided if user is creating `post_type` `link` |
+| description | string | *(optional)* should be provided if user is creating `post_type` `link` or `image` |
+| quote | string | *(optional)* should be provided if user is creating `post_type` `quote` |
+| tag_phrases | string | *(optional)* optional field, must return comma separated words |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "post": [
+    {
+      "id": 1,
+      "post_type": "image",
+      "title": "The Beach",
+      "url": null,
+      "description": "Hello Beach",
+      "status": null,
+      "quote": null,
+      "image_thumb": "http://abstract-prod.s3.amazonaws.com/posts/thumb/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
+      "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
+      "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
+      "tags": "atlanta, polymorphic, multiple words phrase",
+      "username": "sepehr",
+      "created_at": "2015-12-02T17:28:31.506Z",
+      "updated_at": "2015-12-02T17:28:31.506Z"
+    }
+  ]
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 401 - Not Authorized
+    
+```json
+{
+  "error": "Could not authenticate with token: '89a9bad1bd2a5c7e2010b29dbc31a2f'"
+}
+```
+
+###<a name="post-delete"></a>Delete
+
+**URL** /posts/:id
+
+**Method** DELETE
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| user_id | integer | ​*(required)*​ the id of the user whose post you're retrieving |
+| id | integer | ​*(required)*​ the id of the post you're retrieving |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "message": "My new post has been deleted."
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 401 - Not Authorized
+    
+```json
+{
+  "message": "User Amit does not have access to this post."
+}
+```
 
 
 o____o
