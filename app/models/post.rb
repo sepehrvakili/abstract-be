@@ -4,6 +4,8 @@ class Post < ActiveRecord::Base
 	has_many :taggings, as: :taggable
 	has_many :tags, through: :taggings, dependent: :destroy
 
+	has_many :comments, as: :commentable, dependent: :destroy
+
 	has_attached_file :image, styles: { large: "500x500>", medium: "300x300>", thumb: "100x100>" }
 
 	validates_presence_of :post_type
