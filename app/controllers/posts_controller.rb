@@ -61,7 +61,7 @@ class PostsController < ApplicationController
 
 	private
   def post_params
-    params.permit(:post_type, :title, :url, :description, :status, :quote, :image, :tag_phrases, :comment)
+    params.permit(:post_type, :title, :url, :description, :status, :quote, :image, :tag_phrases)
   end
 
   def build_posts(posts)

@@ -9,12 +9,16 @@ Rails.application.routes.draw do
   post    'login',     to: 'users#login'
   post    'profiles',  to: 'profiles#create'
 
+  post     'posts',     to: 'posts#create'
   get      'posts/:id', to: 'posts#show'
   put      'posts/:id', to: 'posts#update'
   delete   'posts/:id', to: 'posts#destroy'
   get      'posts',     to: 'posts#public'
-  post     'posts',     to: 'posts#create'
   
+  post     'posts/:post_id/comments',         to: 'comments#create'
+  get      'posts/:post_id/comments',         to: 'comments#show'
+  put      'posts/:post_id/comments/:id',     to: 'comments#update'
+  delete   'posts/:post_id/comments/:id',     to: 'comments#destroy'
 
   resources :users, except: [:new, :edit] do
     resources :posts, except: [:create, :show, :update, :delete]
