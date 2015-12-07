@@ -16,12 +16,13 @@ Rails.application.routes.draw do
   get      'posts',     to: 'posts#public'
   
   post     'posts/:post_id/comments',         to: 'comments#create'
-  get      'posts/:post_id/comments',         to: 'comments#show'
+  get      'posts/:post_id/comments',         to: 'comments#index'
+  get      'posts/:post_id/comments/:id',     to: 'comments#show'
   put      'posts/:post_id/comments/:id',     to: 'comments#update'
   delete   'posts/:post_id/comments/:id',     to: 'comments#destroy'
 
   resources :users, except: [:new, :edit] do
-    resources :posts, except: [:create, :show, :update, :delete]
+    resources :posts, except: [:create, :show, :update, :destroy]
   end
 
   # get     'post',     to: 'posts#show'
