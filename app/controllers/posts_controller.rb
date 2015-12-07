@@ -77,6 +77,7 @@ class PostsController < ApplicationController
 				image_thumb: post.image.url(:thumb),
 				image_medium: post.image.url(:medium),
 				image_large: post.image.url(:large),
+				user_id: post.user_id,
 				username: User.find(post.user_id).username,
 				tags: post.tag_phrases,
 				created_at: post.created_at,
