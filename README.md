@@ -9,21 +9,28 @@ The url params are called Path parameters
 
 * [User Methods](#user-methods)
   * [Registration](#user-registration)
-  * [Login] (#user-login)
-  * [Delete] (#user-delete)
-  * [Retrieve One Profile] (#user-retrieve)
-  * [Retrieve All Profiles] (#user-retrieve-all)
+  * [Login](#user-login)
+  * [Delete](#user-delete)
+  * [Retrieve One Profile](#user-retrieve)
+  * [Retrieve All Profiles](#user-retrieve-all)
 
-* [Profile Methods] (#profile-methods)
+* [Profile Methods](#profile-methods)
   * [Create] (#profile-create)
 
 * [Post Methods](#post-methods)
   * [Create](#post-creation)
-  * [Retrieve One for One User](#post-retrieve)
-  * [Retrieve All for One User](#post-retrieve-all-per-user)
-  * [Retrieve All Posts](#post-retrieve-all)
+  * [Retrieve A Specific Post](#post-retrieve)
+  * [Retrieve All Posts for A User](#post-retrieve-all-per-user)
+  * [Retrieve All Posts on the Site](#post-retrieve-all)
   * [Update](#post-update)
   * [Delete](#post-delete)
+
+* [Comment Methods](#comment-methods)
+  * [Create](#comment-create)
+  * [Retrieve a Specific Comment](#comment-retrieve)
+  * [Retrieve Comments for A Post](#comments-retrieve)
+  * [Update](#comment-update)
+  * [Delete](#comment-delete)
 
 
 ##<a name="user-methods"></a>User Methods
@@ -404,7 +411,7 @@ If unsuccessful, you will receive:
 }
 ```
 
-###<a name="post-retrieve"></a>Retrieve One Post For a User
+###<a name="post-retrieve"></a>Retrieve A Specific Post
 
 **URL** /posts/:id
 
@@ -458,7 +465,7 @@ If unsuccessful, you will receive:
 
 ###<a name="post-retrieve-all-per-user"></a>Retrieve All Posts For a User
 
-**URL** /users/:user_id/posts
+**URL** /users/:user_id/posts?page=1
 
 **Method** GET
 
@@ -467,6 +474,7 @@ If unsuccessful, you will receive:
 | Path Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
 | user_id | integer | ​*(required)*​ the id of the user whose post you're retrieving |
+| page | integer | ​*(optional)*​ the page you want to start showing from, default is 1.  | 
 
 **Response**
 
@@ -476,24 +484,43 @@ If successful, you will receive:
 
 ```json
 {
-  "post": [
+  "page": 1,
+  "page_count": 2,
+  "posts": [
     {
       "id": 1,
       "post_type": "image",
-      "title": "The Beach",
+      "title": "The Beach YO",
       "url": null,
       "description": "Hello Beach",
       "status": null,
       "quote": null,
-      "image_thumb": "http://abstract-prod.s3.amazonaws.com/posts/thumb/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
-      "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
-      "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
+      "image_thumb": "http://abstract-prod.s3.amazonaws.com/posts/thumb/000/000/001/juara_beach.jpg?1449084490",
+      "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/001/juara_beach.jpg?1449084490",
+      "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/juara_beach.jpg?1449084490",
+      "user_id": 1,
       "username": "sepehr",
-      "tags": "atlanta, polymorphic, multiple words phrase",
+      "tags": "",
       "created_at": "2015-12-02T17:28:31.506Z",
-      "updated_at": "2015-12-02T17:28:31.506Z"
+      "updated_at": "2015-12-02T19:28:11.237Z"
+    },
+    {
+      "id": 3,
+      "post_type": "image",
+      "title": "My new post",
+      "url": null,
+      "description": "Hello Beach",
+      "status": null,
+      "quote": null,
+      "image_thumb": "http://abstract-prod.s3.amazonaws.com/posts/thumb/000/000/003/juara_beach.jpg?1449084873",
+      "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/003/juara_beach.jpg?1449084873",
+      "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/003/juara_beach.jpg?1449084873",
+      "user_id": 5,
+      "username": "hootan",
+      "tags": "",
+      "created_at": "2015-12-02T19:34:33.376Z",
+      "updated_at": "2015-12-02T19:34:33.376Z"
     }
-  ]
 }
 ```
 
@@ -507,9 +534,9 @@ If unsuccessful, you will receive:
 }
 ```
 
-###<a name="post-retrieve-all"></a>Retrieve All Posts for All Users
+###<a name="post-retrieve-all"></a>Retrieve All Posts on the Site
 
-**URL** /users/:user_id/posts
+**URL** /posts?page=1
 
 **Method** GET
 
@@ -518,6 +545,7 @@ If unsuccessful, you will receive:
 | Path Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
 | user_id | integer | ​*(required)*​ the id of the user whose post you're retrieving |
+| page | integer | ​*(optional)*​ the page you want to start showing from, default is 1.  | 
 
 **Response**
 
@@ -528,7 +556,7 @@ If successful, you will receive:
 ```json
 {
   "page": 1,
-  "page_count": 1,
+  "page_count": 2,
   "posts": [
     {
       "id": 7,
@@ -694,6 +722,198 @@ If unsuccessful, you will receive:
   "message": "User Amit does not have access to this post."
 }
 ```
+
+##<a name="comment-methods"></a>Comment Methods
+
+###<a name="comment-create"></a>Create
+
+This request will allow a user to create a comment. 
+
+**URL** /posts/:post_id/comments
+
+**Method** POST
+
+**Request**
+
+| Form Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| message | string | ​*(required)*​ the comment message being left |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "comment": {
+    "id": 4,
+    "message": "hello comment today here now!",
+    "commentable_id": 5,
+    "commentable_type": "Post",
+    "created_at": "2015-12-06T17:05:20.597Z",
+    "updated_at": "2015-12-07T16:47:42.990Z",
+    "user_id": 4
+  }
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 401 - Not Authorized
+    
+```json
+{
+  "message": "User Amit does not have access to this post."
+}
+```
+
+###<a name="comment-retrieve"></a>Retrieve a Specific Comment
+
+This request will allow you to retrieve a comment with its `id`. 
+
+**URL** /posts/:post_id/comments/:id
+
+**Method** GET
+
+**Request**
+
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| post_id | integer | ​*(required)*​ the post_id of the comment |
+| id | integer | ​*(required)*​ the id of the comment |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "comments": [
+    {
+      "id": 4,
+      "message": "hello comment today here now!",
+      "commentable_id": 5,
+      "commentable_type": "Post",
+      "created_at": "2015-12-06T17:05:20.597Z",
+      "updated_at": "2015-12-07T16:47:42.990Z",
+      "user_id": 4
+    },
+    {
+      "id": 8,
+      "message": "hello world",
+      "commentable_id": 5,
+      "commentable_type": "Post",
+      "created_at": "2015-12-07T19:11:15.366Z",
+      "updated_at": "2015-12-07T19:11:15.366Z",
+      "user_id": 4
+    },
+    {
+      "id": 9,
+      "message": "hello world11",
+      "commentable_id": 5,
+      "commentable_type": "Post",
+      "created_at": "2015-12-07T19:14:05.692Z",
+      "updated_at": "2015-12-07T19:14:05.692Z",
+      "user_id": 4
+    }
+  ]
+}
+```
+
+###<a name="comments-retrieve"></a>Retrieve Comments for a Post
+
+This request will allow you to retrieve a comment with its `id`. 
+
+**URL** /posts/:post_id/comments
+
+**Method** GET
+
+**Request**
+
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| post_id | integer | ​*(required)*​ the post_id of the comment |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "comments": [
+    {
+      "id": 4,
+      "message": "hello comment today here now!",
+      "commentable_id": 5,
+      "commentable_type": "Post",
+      "created_at": "2015-12-06T17:05:20.597Z",
+      "updated_at": "2015-12-07T16:47:42.990Z",
+      "user_id": 4
+    },
+    {
+      "id": 8,
+      "message": "hello world",
+      "commentable_id": 5,
+      "commentable_type": "Post",
+      "created_at": "2015-12-07T19:11:15.366Z",
+      "updated_at": "2015-12-07T19:11:15.366Z",
+      "user_id": 4
+    },
+    {
+      "id": 9,
+      "message": "hello world11",
+      "commentable_id": 5,
+      "commentable_type": "Post",
+      "created_at": "2015-12-07T19:14:05.692Z",
+      "updated_at": "2015-12-07T19:14:05.692Z",
+      "user_id": 4
+    }
+  ]
+}
+```
+
+###<a name="comment-delete"></a>Delete
+
+**URL** /posts/:post_id/comments/:id
+
+**Method** DELETE
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| post_id | integer | ​*(required)*​ the post_id of the comment |
+| id | integer | ​*(required)*​ the id of the comment |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "message": "Comment has been deleted."
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 401 - Not Authorized
+    
+```json
+{
+  "message": "User Amit does not have access to this comment."
+}
+```
+
+
 
 
 o____o
