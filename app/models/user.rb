@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
 
 	has_one :profile, dependent: :destroy
 	has_many :posts, dependent: :destroy
+	has_many :likes, dependent: :destroy
 	has_secure_password
 
 	before_validation :ensure_auth_token!
