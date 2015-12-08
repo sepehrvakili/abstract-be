@@ -41,27 +41,4 @@ class ApplicationController < ActionController::Base
     }
   end
 
-  def build_posts(posts)
-    posts.map { |post| 
-      {
-        id: post.id,
-        post_type: post.post_type,
-        title: post.title,
-        url: post.url,
-        description: post.description,
-        status: post.status,
-        quote: post.quote,
-        image_thumb: post.image.url(:thumb),
-        image_medium: post.image.url(:medium),
-        image_large: post.image.url(:large),
-        user_id: post.user_id,
-        username: User.find(post.user_id).username,
-        likes_count: post.likes.count,
-        tags: post.tag_phrases,
-        created_at: post.created_at,
-        updated_at: post.updated_at
-      }
-    }
-  end
-
 end

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :posts do
     resources :comments
     resources :likes
+    resources :moodpieces
   end
 
   resources :users, except: [:new, :edit] do

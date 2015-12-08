@@ -14,11 +14,12 @@ class LikesController < ApplicationController
 	end
 
 	def index
+		@page = params[:page] || 1
 		user = User.find(params[:user_id])
 		if params[:likeable_type].present?
 			case params[:likeable_type].downcase
 			when 'post'
-				@likes = build_posts(user.liked_posts)
+				@likes = user.liked_posts.page(@page).per(20)
 			else
 				@likes = { error: "Not a valid likeable type: '#{params[:likeable_type]}'" }
 			end
