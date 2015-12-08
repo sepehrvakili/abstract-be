@@ -974,7 +974,7 @@ If unsuccessful, you will receive:
 
 This request will allow you to retrieve all likeables of a specified type that a user has liked. 
 
-**URL** /users/:user_id/likes?likeable_type=Post
+**URL** /users/:user_id/likes?likeable_type=post
 
 **Method** GET
 
@@ -983,7 +983,7 @@ This request will allow you to retrieve all likeables of a specified type that a
 | Path Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
 | user_id | integer | ​*(required)*​ the id of the user whose likes you want |
-| likeable_type | string | ​*(required)*​ the type of likeable, eg. Post |
+| likeable_type | string | ​*(required)*​ the type of likeable, eg. post |
 
 **Response**
 
