@@ -15,8 +15,13 @@ class LikesController < ApplicationController
 
 	def index
 		user = User.find(params[:user_id])
-		if params[:likeable_type] && params[:likeable_type] != ''
-			@likes = user.likes.where(likeable_type: params[:likeable_type])
+		if params[:likeable_type].present?
+			case params[:likeable_type].downcase
+			when 'post'
+				@likes = build_posts(user.liked_posts)
+			else
+				@likes = { error: "Not a valid likeable type: '#{params[:likeable_type]}'" }
+			end
 			render :index, status: :ok
 		else 
       render json: { errors: "You must provide a likeable_type path param." },
