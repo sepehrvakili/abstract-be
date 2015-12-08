@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-	before_action :authenticate_user!, except: [:public, :index, :show]
+	before_action :authenticate_user!, except: [:index, :show]
 
 	def create
 		commentable = find_commentable
