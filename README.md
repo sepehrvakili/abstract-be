@@ -32,6 +32,11 @@ The url params are called Path parameters
   * [Update](#comment-update)
   * [Delete](#comment-delete)
 
+* [Like Methods](#like-methods)
+  * [Create](#like-create)
+  * [Retrieve](#like-retrieve)
+  * [Delete](#like-delete)
+
 
 ##<a name="user-methods"></a>User Methods
 
@@ -393,6 +398,7 @@ If successful, you will receive:
       "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
       "username": "sepehr",
+      "likes_count": 2,
       "tags": "atlanta, polymorphic, multiple words phrase",
       "created_at": "2015-12-02T17:28:31.506Z",
       "updated_at": "2015-12-02T17:28:31.506Z"
@@ -445,6 +451,7 @@ If successful, you will receive:
       "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
       "username": "sepehr",
+      "likes_count": 2,
       "tags": "atlanta, polymorphic, multiple words phrase",
       "created_at": "2015-12-02T17:28:31.506Z",
       "updated_at": "2015-12-02T17:28:31.506Z"
@@ -500,6 +507,7 @@ If successful, you will receive:
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/juara_beach.jpg?1449084490",
       "user_id": 1,
       "username": "sepehr",
+      "likes_count": 2,
       "tags": "",
       "created_at": "2015-12-02T17:28:31.506Z",
       "updated_at": "2015-12-02T19:28:11.237Z"
@@ -517,6 +525,7 @@ If successful, you will receive:
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/003/juara_beach.jpg?1449084873",
       "user_id": 5,
       "username": "hootan",
+      "likes_count": 2,
       "tags": "",
       "created_at": "2015-12-02T19:34:33.376Z",
       "updated_at": "2015-12-02T19:34:33.376Z"
@@ -570,6 +579,7 @@ If successful, you will receive:
       "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/007/juara_beach.jpg?1449085301",
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/007/juara_beach.jpg?1449085301",
       "username": "hootan",
+      "likes_count": 2,
       "tags": "atlanta, polymorphic, multiple words phrase",
       "created_at": "2015-12-02T19:41:42.086Z",
       "updated_at": "2015-12-02T19:41:42.086Z"
@@ -586,6 +596,7 @@ If successful, you will receive:
       "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/006/juara_beach.jpg?1449085294",
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/006/juara_beach.jpg?1449085294",
       "username": "hootan",
+      "likes_count": 2,
       "tags": "atlanta, polymorphic, multiple words phrase",
       "created_at": "2015-12-02T19:41:34.861Z",
       "updated_at": "2015-12-02T19:41:34.861Z"
@@ -601,6 +612,7 @@ If successful, you will receive:
       "image_thumb": "http://abstract-prod.s3.amazonaws.com/posts/thumb/000/000/003/juara_beach.jpg?1449084873",
       "image_medium": "http://abstract-prod.s3.amazonaws.com/posts/medium/000/000/003/juara_beach.jpg?1449084873",
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/003/juara_beach.jpg?1449084873",
+      "likes_count": 2,
       "tags": "atlanta, polymorphic, multiple words phrase",
       "username": "hootan",
       "created_at": "2015-12-02T19:34:33.376Z",
@@ -671,6 +683,7 @@ If successful, you will receive:
       "image_large": "http://abstract-prod.s3.amazonaws.com/posts/large/000/000/001/524035_4527286665178_246125113_n.jpg?1449077310",
       "tags": "atlanta, polymorphic, multiple words phrase",
       "username": "sepehr",
+      "likes_count": 2,
       "created_at": "2015-12-02T17:28:31.506Z",
       "updated_at": "2015-12-02T17:28:31.506Z"
     }
@@ -735,6 +748,10 @@ This request will allow a user to create a comment.
 
 **Request**
 
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| post_id | integer | ​*(required)*​ the id of the post being commented on |
+
 | Form Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
 | message | string | ​*(required)*​ the comment message being left |
@@ -781,7 +798,7 @@ This request will allow you to retrieve a comment with its `id`.
 
 | Path Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| post_id | integer | ​*(required)*​ the post_id of the comment |
+| post_id | integer | ​*(required)*​ the id of the post being commented on |
 | id | integer | ​*(required)*​ the id of the comment |
 
 **Response**
@@ -836,7 +853,7 @@ This request will allow you to retrieve a comment with its `id`.
 
 | Path Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| post_id | integer | ​*(required)*​ the post_id of the comment |
+| post_id | integer | ​*(required)*​ the id of the post being commented on |
 
 **Response**
 
@@ -888,7 +905,7 @@ If successful, you will receive:
     
 | Path Params       | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| post_id | integer | ​*(required)*​ the post_id of the comment |
+| post_id | integer | ​*(required)*​ the id of the post being commented on  |
 | id | integer | ​*(required)*​ the id of the comment |
 
 **Response**
@@ -913,7 +930,153 @@ If unsuccessful, you will receive:
 }
 ```
 
+##<a name="like-methods"></a>Like Methods
 
+###<a name="like-create"></a>Create
+
+This request will allow a user to like anything likeable, eg. Post, Discussion, etc. 
+
+**URL** /posts/:post_id/likes
+
+**Method** POST
+
+**Request**
+
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| post_id | integer | ​*(required)*​ the id of the post being liked |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "message": "Item has been liked."
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 500 - Internal Server Error
+    
+```json
+{
+  "errors": [
+    "User can only like an item once."
+  ]
+}
+```
+
+###<a name="like-retrieve"></a>Retrieve A User's Likes
+
+This request will allow you to retrieve all likeables of a specified type that a user has liked. 
+
+**URL** /users/:user_id/likes?likeable_type=Post
+
+**Method** GET
+
+**Request**
+
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| user_id | integer | ​*(required)*​ the id of the user whose likes you want |
+| likeable_type | string | ​*(required)*​ the type of likeable, eg. Post |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "likes": [
+    {
+      "id": 5,
+      "post_type": "text",
+      "title": "Multi words This is polymorphic by sepehr",
+      "url": null,
+      "description": "Hello World",
+      "status": "what done happen was is that...",
+      "quote": null,
+      "image_thumb": "http://abstract-test.s3.amazonaws.com/posts/thumb/000/000/005/sepehr-bali.jpg?1449017810",
+      "image_medium": "http://abstract-test.s3.amazonaws.com/posts/medium/000/000/005/sepehr-bali.jpg?1449017810",
+      "image_large": "http://abstract-test.s3.amazonaws.com/posts/large/000/000/005/sepehr-bali.jpg?1449017810",
+      "user_id": 1,
+      "username": "sepehr",
+      "likes_count": 1,
+      "tags": "atlanta, polymorphic, multiple words phrase",
+      "created_at": "2015-12-02T00:56:50.659Z",
+      "updated_at": "2015-12-03T20:51:30.630Z"
+    },
+    {
+      "id": 19,
+      "post_type": "text",
+      "title": "This is a new post by Kaveh",
+      "url": null,
+      "description": null,
+      "status": null,
+      "quote": "This post has a quote!",
+      "image_thumb": "/images/thumb/missing.png",
+      "image_medium": "/images/medium/missing.png",
+      "image_large": "/images/large/missing.png",
+      "user_id": 4,
+      "username": "kiarash",
+      "likes_count": 2,
+      "tags": "apple, bannanaa",
+      "created_at": "2015-12-08T03:32:36.962Z",
+      "updated_at": "2015-12-08T03:32:36.962Z"
+    }
+  ]
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 500 - Internal Server Error
+    
+```json
+{
+  "errors": "You must provide a likeable_type path param."
+}
+```
+
+###<a name="like-delete"></a>Delete
+
+**URL** /posts/:post_id/likes
+
+**Method** DELETE
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| post_id | integer | ​*(required)*​ the id of the post being commented on  |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "message": "Amit's like has been removed."
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 401 - Not Authorized
+    
+```json
+{
+  "error": "Could not authenticate with token: '9dbd3e79ea32134fa2487cee2f'"
+}
+```
 
 
 o____o
