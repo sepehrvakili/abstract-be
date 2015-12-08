@@ -6,6 +6,9 @@ class Post < ActiveRecord::Base
 
 	has_many :comments, as: :commentable, dependent: :destroy
 
+	has_many :likes, as: :likeable, dependent: :destroy
+  has_many :fans, through: :likes, source: :user
+
 	has_attached_file :image, styles: { large: "500x500>", medium: "300x300>", thumb: "100x100>" }
 
 	validates_presence_of :post_type
