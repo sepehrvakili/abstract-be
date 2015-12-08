@@ -1,11 +1,14 @@
 class Post < ActiveRecord::Base
 
 	belongs_to :user
+
+	has_many :moodpieces, dependent: :destroy
+
 	has_many :taggings, as: :taggable
 	has_many :tags, through: :taggings, dependent: :destroy
-
+	
 	has_many :comments, as: :commentable, dependent: :destroy
-
+	
 	has_many :likes, as: :likeable, dependent: :destroy
   has_many :fans, through: :likes, source: :user
 
