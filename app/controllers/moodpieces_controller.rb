@@ -12,6 +12,28 @@ class MoodpiecesController < ApplicationController
 		end
 	end
 
+	def update
+		post = Post.find(params[:post_id])
+		if current_user.id == post.user_id
+			@moodpiece = Moodpiece.find(params[:id])
+			@moodpiece.update(moodpiece_params)
+			render :update, status: :ok
+		else
+			render json: { message: "#{current_user.firstname} does not have access to this moodpiece." }, status: :unauthorized
+		end
+	end
+
+	def destroy
+		post = Post.find(params[:post_id])
+		if current_user.id == post.user_id
+			moodpiece = Moodpiece.find(params[:id])
+			moodpiece.destroy
+			render json: { message: "Moodpiece has been removed." }, status: :ok
+		else
+			render json: { message: "#{current_user.firstname} does not have access to this moodpiece." }, status: :unauthorized
+		end
+	end
+
 	private
   def moodpiece_params
     params.permit(:div_id, :color, :image)
