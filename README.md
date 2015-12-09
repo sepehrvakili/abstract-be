@@ -7,6 +7,8 @@ The url params are called Path parameters
 
 **Methods**
 
+###<a name="comment-retrieve"></a>Retrieve a Specific Comment
+
 * [User Methods](#user-methods)
   * [Registration](#user-registration)
   * [Login](#user-login)
@@ -17,7 +19,7 @@ The url params are called Path parameters
 * [Profile Methods](#profile-methods)
   * [Create](#profile-create)
 
-* [Post Methods](#post-methods)
+* <a name="post-nav"></a>[Post Methods](#post-methods)
   * [Create](#post-creation)
   * [Retrieve A Specific Post](#post-retrieve)
   * [Retrieve All Posts for A User](#post-retrieve-all-per-user)
@@ -36,6 +38,12 @@ The url params are called Path parameters
   * [Create](#like-create)
   * [Retrieve](#like-retrieve)
   * [Delete](#like-delete)
+
+* [Moodboard](#moodboard-methods)
+  * [Create](#moodboard-create)
+  * [Retrieve](#moodboard-retrieve)
+  * [Update](#moodboard-update)
+  * [Delete](#moodboard-delete)
 
 
 ##<a name="user-methods"></a>User Methods
@@ -1275,6 +1283,152 @@ If unsuccessful, you will receive:
 ```json
 {
   "error": "Could not authenticate with token: '9dbd3e79ea32134fa2487cee2f'"
+}
+```
+
+##<a name="moodboard-methods"></a>Moodboard Methods
+
+###<a name="moodboard-create"></a>Create
+
+This request will allow a user to add a moodboard piece after selecting the `post_type`: `moodboard`. 
+
+**URL** /posts/:post_id/moodpieces
+
+**Method** POST
+
+**Request**
+
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| post_id | integer | ​*(required)*​ the id of the post that the moodpiece belongs to |
+
+**Note** Either color or image should be provided along with `div_id`.
+
+| Form Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| div_id | string | ​*(required)*​ the id of the div where the color or image piece should be located |
+| color | string | ​*(optional)*​ the color of the moodpiece container |
+| image | file | ​*(optional)*​ the image of the moodpiece container |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "moodpiece": {
+    "id": 4,
+    "div_id": "position4",
+    "color": "FFFFFF",
+    "post_id": 20,
+    "image_file_name": null,
+    "image_content_type": null,
+    "image_file_size": null,
+    "image_updated_at": null,
+    "created_at": "2015-12-09T16:43:36.329Z",
+    "updated_at": "2015-12-09T16:43:36.329Z"
+  }
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 500 - Internal Server Error
+    
+```json
+{
+  "errors": [
+    "Div can't be blank"
+  ]
+}
+```
+
+###<a name="moodboard-retrieve"></a>Retrieve
+
+Moodboard retrieval is the same as retrieving a `post` since moodboard pieces (moodpieces) belong to and collectively form a `post`.
+
+Go to [Post Methods](#post-nav) above for moodboard retrieval.
+
+###<a name="moodboard-update"></a>Update
+
+**URL** /posts/:post_id/moodpieces/:id
+
+**Method** PUT
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| post_id | integer | ​*(required)*​ the id of the post which the moodpiece belongs to |
+| id | integer | *(required)* the id of the moodpiece to be updated |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "moodpiece": {
+    "id": 5,
+    "div_id": "position5",
+    "color": "000000",
+    "post_id": 20,
+    "image_file_name": null,
+    "image_content_type": null,
+    "image_file_size": null,
+    "image_updated_at": null,
+    "created_at": "2015-12-09T17:06:59.553Z",
+    "updated_at": "2015-12-09T17:06:59.553Z"
+  }
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 401 - Not Authorized
+    
+```json
+{
+  "message": "Amit does not have access to this moodpiece."
+}
+```
+
+###<a name="moodboard-delete"></a>Delete
+
+**URL** /posts/:post_id/moodpieces/:id
+
+**Method** DELETE
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| post_id | integer | ​*(required)*​ the id of the post which the moodpiece belongs to |
+| id | integer | *(required)* the id of the moodpiece to be deleted |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "message": "Moodpiece has been removed."
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 401 - Not Authorized
+    
+```json
+{
+  "message": "Amit does not have access to this moodpiece."
 }
 ```
 
