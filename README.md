@@ -1,7 +1,7 @@
 # Abstract App API :: O__O
 <hr>
 
-Welcome to the Abstract App API documentation. Abstract allows creators to inspire and to be inspired!
+Welcome to the Abstract App API documentation.
 
 The url params are called Path parameters
 
