@@ -15,15 +15,18 @@ The url params are called Path parameters
   * [Delete](#user-delete)
   * [Retrieve One Profile](#user-retrieve)
   * [Retrieve All Profiles](#user-retrieve-all)
+  * [Retrieve Followers](#user-followers)
+  * [Retrieve Following](#user-following)
 
 * [Profile Methods](#profile-methods)
   * [Create](#profile-create)
 
 * <a name="post-nav"></a>[Post Methods](#post-methods)
-  * [Create](#post-creation)
+  * [Create](#post-create)
   * [Retrieve A Specific Post](#post-retrieve)
   * [Retrieve All Posts for A User](#post-retrieve-all-per-user)
   * [Retrieve All Posts on the Site](#post-retrieve-all)
+  * [Retrieve All Posts for A Users's Following](#post-retrieve-all-following)
   * [Update](#post-update)
   * [Delete](#post-delete)
 
@@ -39,12 +42,15 @@ The url params are called Path parameters
   * [Retrieve](#like-retrieve)
   * [Delete](#like-delete)
 
-* [Moodboard](#moodboard-methods)
+* [Moodboard Methods](#moodboard-methods)
   * [Create](#moodboard-create)
   * [Retrieve](#moodboard-retrieve)
   * [Update](#moodboard-update)
   * [Delete](#moodboard-delete)
 
+* [Relationship Methods](#relationship-methods)
+  * [Create](#relationship-create)
+  * [Delete](#relationship-delete)
 
 ##<a name="user-methods"></a>User Methods
 
@@ -301,6 +307,96 @@ If unsuccessful, you will receive:
 }
 ```
 
+###<a name="user-followers"></a>Retrieve Followers
+
+Each request will provide 20 followers at most. Providing a `page` param will allow you to get subsequent followers. For first 20 followers `page` can be empty since default value is `1`. For second 20 users (eg. users 21-40) `page` should be `2` and so on.
+
+**URL** /users/:id/followers?page=1
+
+**Method** GET
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| page | integer | ​*(optional)*​ the page you want to start showing from, default is 1 | 
+| id | integer | ​*(optional)*​ the id of the user whose following you want, it is `id` not `user_id` |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+    
+```json
+{
+  "page": 1,
+  "page_count": 1,
+  "followers": [
+    {
+      "user_id": 2,
+      "username": "kaveh",
+      "picture_thumb": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/012/yazd.jpg?1449069611",
+      "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/012/yazd.jpg?1449069611",
+      "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/012/yazd.jpg?1449069611"
+    }
+  ]
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 404 - Not Found
+
+###<a name="user-following"></a>Retrieve Following
+
+This request will allow you to retrieve the users being followed by any one user. Each request will provide 20 followings at most. Providing a `page` param will allow you to get subsequent followings. For first 20 followings `page` can be empty since default value is `1`. For second 20 users (eg. users 21-40) `page` should be `2` and so on.
+
+**URL** /users/:id/following?page=1
+
+**Method** GET
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| page | integer | ​*(optional)*​ the page you want to start showing from, default is 1 | 
+| id | integer | ​*(optional)*​ the id of the user whose following you want, it is `id` not `user_id` | 
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+    
+```json
+{
+  "page": 1,
+  "page_count": 1,
+  "following": [
+    {
+      "user_id": 3,
+      "username": "hootan",
+      "picture_thumb": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/014/58277_2475495443955_494366159_n.jpg?1449075312",
+      "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/014/58277_2475495443955_494366159_n.jpg?1449075312",
+      "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/014/58277_2475495443955_494366159_n.jpg?1449075312"
+    },
+    {
+      "user_id": 4,
+      "username": "kiarash",
+      "picture_thumb": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/015/Screen_Shot_2015-12-02_at_10.38.51_PM.png?1449176752",
+      "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/015/Screen_Shot_2015-12-02_at_10.38.51_PM.png?1449176752",
+      "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/015/Screen_Shot_2015-12-02_at_10.38.51_PM.png?1449176752"
+    }
+  ]
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 404 - Not Found
+    
+
 ##<a name="profile-methods"></a>Profile Methods
 
 ###<a name="profile-create"></a>Create
@@ -383,7 +479,8 @@ However, the front-end app can perform validation to ensure all fields relavent 
 | url | string | *(optional)* should be provided if user is creating `post_type` `link` |
 | description | String | *(optional)* should be provided if user is creating `post_type` `link` or `image` |
 | quote | string | *(optional)* should be provided if user is creating `post_type` `quote` |
-| tag_phrases | string | *(optional)* optional field, must return comma separated words |
+| tag_phrases | string | *(optional)* must provide comma separated words or phrases |
+| `moodboard_css_class` | string | *(optional)* must be provided if the `post_type` is `moodboard` |
 
 **Response**
 
@@ -450,6 +547,20 @@ If successful, you will receive:
     "id": 20,
     "post_type": "moodboard",
     "moodboard_css_class": "template1",
+    "title": "Travel Photo",
+    "url": null,
+    "description": null,
+    "status": null,
+    "quote": null,
+    "image_thumb": "/images/thumb/missing.png",
+    "image_medium": "/images/medium/missing.png",
+    "image_large": "/images/large/missing.png",
+    "user_id": 4,
+    "username": "kiarash",
+    "likes_count": 0,
+    "tags": "gorgan, iran, travel, nature",
+    "created_at": "2015-12-08T19:05:19.063Z",
+    "updated_at": "2015-12-08T22:08:29.801Z",
     "moodpieces": [
       {
         "id": 1,
@@ -470,20 +581,6 @@ If successful, you will receive:
         "image": "http://abstract-test.s3.amazonaws.com/moodpieces/original/000/000/003/gorgan_road.jpg?1449602459"
       }
     ],
-    "title": "This is a moodboard post.",
-    "url": null,
-    "description": null,
-    "status": null,
-    "quote": null,
-    "image_thumb": "/images/thumb/missing.png",
-    "image_medium": "/images/medium/missing.png",
-    "image_large": "/images/large/missing.png",
-    "user_id": 4,
-    "username": "kiarash",
-    "likes_count": 0,
-    "tags": "apple, bannanaa, moodboard, banana!!!",
-    "created_at": "2015-12-08T19:05:19.063Z",
-    "updated_at": "2015-12-08T19:05:19.063Z",
     "comments": [
       {
         "id": 10,
@@ -761,6 +858,128 @@ If unsuccessful, you will receive:
 }
 ```
 
+###<a name="post-retrieve-all-following"></a>Retrieve All Posts for a User's Following
+
+**URL** /posts?page=1&?following=true
+
+**Method** GET
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| page | integer | ​*(optional)*​ the page you want to start showing from, default is 1.  |
+| following | string | *(optional)* set to `true` to retrieve only the posts for the current user's following |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "page": 1,
+  "page_count": 1,
+  "posts": [
+    {
+      "post": {
+        "id": 21,
+        "post_type": "moodboard",
+        "title": "This is a moodboard post.",
+        "url": null,
+        "description": null,
+        "status": null,
+        "quote": null,
+        "image_thumb": "/images/thumb/missing.png",
+        "image_medium": "/images/medium/missing.png",
+        "image_large": "/images/large/missing.png",
+        "user_id": 4,
+        "username": "kiarash",
+        "likes_count": 0,
+        "tags": "apple, bannanaa, moodboard, banana!!!",
+        "created_at": "2015-12-08T21:38:58.638Z",
+        "updated_at": "2015-12-08T21:38:58.638Z",
+        "moodboard_css_class": "template1",
+        "moodpieces": [],
+        "comments": []
+      }
+    },
+    {
+      "post": {
+        "id": 20,
+        "post_type": "moodboard",
+        "title": "This is a moodboard post.",
+        "url": null,
+        "description": null,
+        "status": null,
+        "quote": null,
+        "image_thumb": "/images/thumb/missing.png",
+        "image_medium": "/images/medium/missing.png",
+        "image_large": "/images/large/missing.png",
+        "user_id": 4,
+        "username": "kiarash",
+        "likes_count": 0,
+        "tags": "apple, bannanaa, moodboard, banana!!!",
+        "created_at": "2015-12-08T19:05:19.063Z",
+        "updated_at": "2015-12-08T19:05:19.063Z",
+        "moodboard_css_class": "template1",
+        "moodpieces": [
+          {
+            "id": 1,
+            "div_id": "position1",
+            "color": null,
+            "image": "http://abstract-test.s3.amazonaws.com/moodpieces/original/000/000/001/gorgan_road.jpg?1449602063"
+          },
+          {
+            "id": 2,
+            "div_id": "position1",
+            "color": null,
+            "image": "http://abstract-test.s3.amazonaws.com/moodpieces/original/000/000/002/gorgan_road.jpg?1449602189"
+          },
+          {
+            "id": 3,
+            "div_id": "position3",
+            "color": null,
+            "image": "http://abstract-test.s3.amazonaws.com/moodpieces/original/000/000/003/gorgan_road.jpg?1449602459"
+          }
+        ],
+        "comments": [
+          {
+            "id": 10,
+            "message": "hellow comment ",
+            "created_at": "2015-12-08T21:20:51.524Z",
+            "updated_at": "2015-12-08T21:20:51.524Z",
+            "user_id": 2,
+            "username": "kaveh",
+            "picture": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/012/yazd.jpg?1449069611"
+          },
+          {
+            "id": 11,
+            "message": "hellow comment@@@111 ",
+            "created_at": "2015-12-08T21:21:08.794Z",
+            "updated_at": "2015-12-08T21:21:08.794Z",
+            "user_id": 2,
+            "username": "kaveh",
+            "picture": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/012/yazd.jpg?1449069611"
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 401 - Not Authorized
+    
+```json
+{
+  "error": "Could not authenticate with token: '89a9bad1bd2a5c7e2010b29dbc31a2f'"
+}
+```
+
 ###<a name="post-update"></a>Update
 
 **URL** /posts/:id
@@ -788,6 +1007,7 @@ However, the front-end app can perform validation to ensure all fields relavent 
 | description | string | *(optional)* should be provided if user is creating `post_type` `link` or `image` |
 | quote | string | *(optional)* should be provided if user is creating `post_type` `quote` |
 | tag_phrases | string | *(optional)* optional field, must return comma separated words |
+| `moodboard_css_class` | string | *(optional)* must be provided if the `post_type` is `moodboard` |
 
 **Response**
 
@@ -1319,16 +1539,13 @@ If successful, you will receive:
 ```json
 {
   "moodpiece": {
-    "id": 4,
-    "div_id": "position4",
-    "color": "FFFFFF",
+    "id": 10,
+    "div_id": "topright",
+    "color": null,
+    "image": "http://abstract-test.s3.amazonaws.com/moodpieces/original/000/000/010/1440626408_n.jpg?1449789534",
     "post_id": 20,
-    "image_file_name": null,
-    "image_content_type": null,
-    "image_file_size": null,
-    "image_updated_at": null,
-    "created_at": "2015-12-09T16:43:36.329Z",
-    "updated_at": "2015-12-09T16:43:36.329Z"
+    "created_at": "2015-12-10T23:18:54.138Z",
+    "updated_at": "2015-12-10T23:18:54.138Z"
   }
 }
 ```
@@ -1373,16 +1590,13 @@ If successful, you will receive:
 ```json
 {
   "moodpiece": {
-    "id": 5,
-    "div_id": "position5",
-    "color": "000000",
+    "id": 10,
+    "div_id": "topright",
+    "color": null,
+    "image": "http://abstract-test.s3.amazonaws.com/moodpieces/original/000/000/010/1440626408_n.jpg?1449789534",
     "post_id": 20,
-    "image_file_name": null,
-    "image_content_type": null,
-    "image_file_size": null,
-    "image_updated_at": null,
-    "created_at": "2015-12-09T17:06:59.553Z",
-    "updated_at": "2015-12-09T17:06:59.553Z"
+    "created_at": "2015-12-10T23:18:54.138Z",
+    "updated_at": "2015-12-10T23:18:54.138Z"
   }
 }
 ```
@@ -1431,6 +1645,77 @@ If unsuccessful, you will receive:
   "message": "Amit does not have access to this moodpiece."
 }
 ```
+
+##<a name="relationship-methods"></a>Relationship Methods
+
+###<a name="relationship-create"></a>Create
+
+This request will allow the current user to follow another user by creating an asymmetric active relationship. 
+
+**URL** /relationships
+
+**Method** POST
+
+**Request**
+
+| Form Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| followed_id | integer | ​*(required)*​ the id of the user being followed |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+
+```json
+{
+  "message": "You are now following cori."
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 500 - Internal Server Error
+    
+```json
+{
+  "errors": [
+    "User can only like an item once."
+  ]
+}
+```
+
+###<a name="relationship-delete"></a>Delete
+
+**URL** /relationships/:id
+
+**Method** DELETE
+
+**Request**
+    
+| Path Params       | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| id | integer | ​*(required)*​ the id of the relationship  |
+
+**Response**
+
+If successful, you will receive:
+
+    Status Code: 200 - OK
+    
+```json
+{
+  "message": "You are no longer following cori."
+}
+```
+
+If unsuccessful, you will receive:
+
+    Status Code: 404 - Not Found
+    
+
+
 
 
 o____o

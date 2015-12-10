@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-	before_action :authenticate_user!, except: [:create, :login]
+	before_action :authenticate_user!, except: [:create, :login, :followers, :following]
 
 	def create
 		@user = User.new(user_params)
@@ -38,6 +38,20 @@ class UsersController < ApplicationController
 		@total_pages = @profiles.total_pages
 		@profiles = build_profiles(@profiles)
 		render :index, status: :ok
+	end
+
+	def followers
+		@page = params[:page] || 1
+		user = User.find(params[:id])
+		@followers = user.followers.page(@page).per(20)
+		render :followers, status: :ok
+	end
+
+	def following
+		@page = params[:page] || 1
+		user = User.find(params[:id])
+		@following = user.following.page(@page).per(20)
+		render :following, status: :ok
 	end
 
 	# try to fix it later:
