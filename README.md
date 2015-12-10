@@ -1,7 +1,7 @@
 # Abstract App API :: O__O
 <hr>
 
-Welcome to the Abstract App API documentation. 
+Welcome to the Abstract App API documentation. Abstract allows creators to inspire and to be inspired!
 
 The url params are called Path parameters
 
@@ -1539,16 +1539,13 @@ If successful, you will receive:
 ```json
 {
   "moodpiece": {
-    "id": 4,
-    "div_id": "position4",
-    "color": "FFFFFF",
+    "id": 10,
+    "div_id": "topright",
+    "color": null,
+    "image": "http://abstract-test.s3.amazonaws.com/moodpieces/original/000/000/010/1440626408_n.jpg?1449789534",
     "post_id": 20,
-    "image_file_name": null,
-    "image_content_type": null,
-    "image_file_size": null,
-    "image_updated_at": null,
-    "created_at": "2015-12-09T16:43:36.329Z",
-    "updated_at": "2015-12-09T16:43:36.329Z"
+    "created_at": "2015-12-10T23:18:54.138Z",
+    "updated_at": "2015-12-10T23:18:54.138Z"
   }
 }
 ```
@@ -1593,16 +1590,13 @@ If successful, you will receive:
 ```json
 {
   "moodpiece": {
-    "id": 5,
-    "div_id": "position5",
-    "color": "000000",
+    "id": 10,
+    "div_id": "topright",
+    "color": null,
+    "image": "http://abstract-test.s3.amazonaws.com/moodpieces/original/000/000/010/1440626408_n.jpg?1449789534",
     "post_id": 20,
-    "image_file_name": null,
-    "image_content_type": null,
-    "image_file_size": null,
-    "image_updated_at": null,
-    "created_at": "2015-12-09T17:06:59.553Z",
-    "updated_at": "2015-12-09T17:06:59.553Z"
+    "created_at": "2015-12-10T23:18:54.138Z",
+    "updated_at": "2015-12-10T23:18:54.138Z"
   }
 }
 ```
@@ -1725,3 +1719,5 @@ If unsuccessful, you will receive:
 
 
 o____o
+
+
