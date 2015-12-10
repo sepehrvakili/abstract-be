@@ -48,7 +48,11 @@ class PostsController < ApplicationController
 
 	def public
 		@page = params[:page] || 1
-		@posts = Post.all.page(@page).per(20)
+		if params[:following] == 'true'
+			@posts = current_user.following_posts.page(@page).per(20)
+		else
+			@posts = Post.all.page(@page).per(20)	
+		end
 		render :index, status: :ok
 	end
 

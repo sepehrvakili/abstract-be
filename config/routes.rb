@@ -13,14 +13,19 @@ Rails.application.routes.draw do
   delete   'posts/:post_id/likes',    to: 'likes#destroy'
   get      'users/:user_id/likes',    to: 'likes#index'
 
-  resources :posts do
-    resources :comments
-    resources :likes
-    resources :moodpieces
+  resources :posts, except: [:edit, :new] do
+    resources :comments,    except: [:edit, :new]
+    resources :likes,       only:   [:create, :index, :destroy]
+    resources :moodpieces,  only:   [:create, :update, :destroy]
   end
 
   resources :users, except: [:new, :edit] do
     resources :posts, except: [:create, :show, :update, :destroy]
+    member do 
+      get :followers, :following
+    end
   end
+
+  resources :relationships, only:   [:create, :destroy]
 
 end
