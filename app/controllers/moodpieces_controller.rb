@@ -2,6 +2,10 @@ class MoodpiecesController < ApplicationController
 	before_action :authenticate_user!, except: [:index, :show]
 
 	def create
+		moodpiece = Moodpiece.where(div_id: params[:div_id], post_id: params[:post_id])
+		if moodpiece.present?
+			Moodpiece.destroy_all(div_id: params[:div_id], post_id: params[:post_id])
+		end
 		post = Post.find(params[:post_id])
 		@moodpiece = post.moodpieces.new(moodpiece_params)
 		if @moodpiece.save
