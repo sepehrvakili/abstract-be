@@ -49,8 +49,8 @@ class UsersController < ApplicationController
 
 	def following
 		@page = params[:page] || 1
-		user = User.find(params[:id])
-		@following = user.following.page(@page).per(20)
+		@user = User.find(params[:id])
+		@following = @user.following.page(@page).per(20)
 		render :following, status: :ok
 	end
 
