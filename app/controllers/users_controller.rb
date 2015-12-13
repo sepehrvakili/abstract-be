@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 	def create
 		@user = User.new(user_params)
 		if @user.save
-			render "create.json.jbuilder", status: :created
+			render :create, status: :created
 		else
 			render json: { errors: @user.errors.full_messages },
 				status: :unprocessible_entity
@@ -23,20 +23,17 @@ class UsersController < ApplicationController
 
 	def show
 		if User.exists?(params[:id])
-			@profile = Profile.find_by(user_id: params[:id])
-			@profile = build_profiles([@profile])
+			@user = User.find(params[:id])
     	render :show, status: :ok
     else
-    	render json: { errors: "Profile does not exist." },
+    	render json: { errors: "User does not exist." },
     		status: :not_found
     end
 	end
 
 	def index
 		@page = params[:page] || 1
-		@profiles = Profile.all.page(@page).per(20)
-		@total_pages = @profiles.total_pages
-		@profiles = build_profiles(@profiles)
+		@users = User.all.page(@page).per(20)
 		render :index, status: :ok
 	end
 
@@ -54,16 +51,16 @@ class UsersController < ApplicationController
 		render :following, status: :ok
 	end
 
-	# try to fix it later:
-	# def destroy
-	# 	user = User.find(params[:id])
-	# 	if current_user.id == user.id
-	# 		user.destroy
-	# 		render json: { message: "#{current_user.firstname}'s account & profile have been deleted." }, status: :ok
-	# 	else
-	# 		render json: { message: "User #{current_user.firstname} does not have access to this user." }, status: :unauthorized
-	# 	end
-	# end
+	def destroy
+		user = User.find(params[:id])
+		if current_user.id == user.id
+			firstname = user.firstname
+			user.destroy
+			render json: { message: "#{firstname}'s account has been deleted." }, status: :ok
+		else	
+			render json: { message: "#{current_user.firstname} is not the rightful owner of this account." }, status: :unauthorized
+		end
+	end
 
 	private
 

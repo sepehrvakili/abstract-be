@@ -23,22 +23,4 @@ class ApplicationController < ActionController::Base
   	request.format = :json unless params[:format]
   end
 
-  private
-  def build_profiles(profiles)
-    profiles.map { |profile|
-      {
-        id: profile.user_id,
-        bio: profile.bio,
-        website: profile.website,
-        location: profile.location,
-        picture_thumb: profile.picture.url(:thumb),
-        picture_medium: profile.picture.url(:medium),
-        picture_large: profile.picture.url(:large),
-        profile_id: profile.id,
-        username: User.find(profile.user_id).username,
-        tags: profile.tag_phrases
-      }
-    }
-  end
-
 end
