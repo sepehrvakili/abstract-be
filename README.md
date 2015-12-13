@@ -1,4 +1,4 @@
-# Abstract App API :: O__O
+# Abstract App API :: XO
 <hr>
 
 Welcome to the Abstract App API documentation.
@@ -13,8 +13,8 @@ The url params are called Path parameters
   * [Registration](#user-registration)
   * [Login](#user-login)
   * [Delete](#user-delete)
-  * [Retrieve One Profile](#user-retrieve)
-  * [Retrieve All Profiles](#user-retrieve-all)
+  * [Retrieve One User](#user-retrieve)
+  * [Retrieve All Users](#user-retrieve-all)
   * [Retrieve Followers](#user-followers)
   * [Retrieve Following](#user-following)
 
@@ -83,17 +83,16 @@ If successful, you will receive:
 ```json
 {
   "user": {
-    "id": 3,
-    "firstname": "hootan",
-    "lastname": "vakili",
+    "id": 8,
+    "firstname": "Hootan",
+    "lastname": "Vakili",
     "username": "hootan",
-    "password_digest": "$2a$10$q/ijzziJqGiORHVnRFVmoeZ1amhJ/7pY5HAGHdnRja6q4ydmnkRPa",
-    "created_at": "2015-12-02T16:11:47.314Z",
-    "updated_at": "2015-12-02T16:11:47.314Z",
-    "auth_token": "9dbd3e79ea32134fa2487cee124693e2",
-    "email": "hootan@gmail.com"
+    "email": "hootan1990@gmail.com",
+    "auth_token": "abe63b71bfb14015c4bbb4047064087c",
+    "created_at": "2015-12-13T19:13:59.026Z",
+    "updated_at": "2015-12-13T19:13:59.026Z"
   }
-}        
+}       
 ```
 
 If unsuccessful, you will receive:
@@ -134,17 +133,16 @@ If successful, you will receive:
 ```json
 {
   "user": {
-    "id": 3,
-    "firstname": "hootan",
-    "lastname": "vakili",
+    "id": 8,
+    "firstname": "Hootan",
+    "lastname": "Vakili",
     "username": "hootan",
-    "password_digest": "$2a$10$q/ijzziJqGiORHVnRFVmoeZ1amhJ/7pY5HAGHdnRja6q4ydmnkRPa",
-    "created_at": "2015-12-02T16:11:47.314Z",
-    "updated_at": "2015-12-02T16:11:47.314Z",
-    "auth_token": "9dbd3e79ea32134fa2487cee124693e2",
-    "email": "hootan@gmail.com"
+    "email": "hootan1990@gmail.com",
+    "auth_token": "abe63b71bfb14015c4bbb4047064087c",
+    "created_at": "2015-12-13T19:13:59.026Z",
+    "updated_at": "2015-12-13T19:13:59.026Z"
   }
-}   
+}
 ```
 
 If unsuccessful, you will receive:
@@ -157,9 +155,9 @@ If unsuccessful, you will receive:
 }
 ```
 
-###<a name="user-delete"></a>Delete User NOTE: This is currently not working
+###<a name="user-delete"></a>Delete User
 
-This request will allow an existing user in the system to delete their account, profile, and any posts. 
+This request will allow an existing user in the system to delete their account. The users posts, profile, and behaviors will also be removed (eg. likes). 
 
 **URL** /users/:id
 
@@ -179,12 +177,8 @@ If successful, you will receive:
     
 ```json
 {
-  "firstname": "sepehr",
-  "lastname": "vakili",
-  "email": "sdvakili@gmail.com",
-  "username": "sepehr",
-  "auth_token": "b83fe51a36fe825a12e394e3f8ad8016"
-}    
+  "message": "Hootan's account has been deleted."
+}  
 ```
 
 If unsuccessful, you will receive:
@@ -193,12 +187,12 @@ If unsuccessful, you will receive:
     
 ```json
 {
-  "error": "Could not find user for sepehr or wrong password."
+  "message": "kiarash is not the rightful owner of this account."
 }
 ```
 
 
-###<a name="user-retrieve"></a>Retrieve One Profile
+###<a name="user-retrieve"></a>Retrieve One User
 
 This request will allow a user to retrieve a profile of any other user as long as you provide an `Auth-Token`.
 
@@ -220,19 +214,18 @@ If successful, you will receive:
     
 ```json
 {
-  "profile": [
-    {
-      "id": 9,
-      "bio": "Arrigatto!",
-      "website": "http://sepehr.io",
-      "location": "The Universe",
-      "picture_thumb": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/009/sepehr-bali.jpg?1449025389",
-      "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/009/sepehr-bali.jpg?1449025389",
-      "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/009/sepehr-bali.jpg?1449025389",
-      "user_id": 1,
-      "username": "sepehr"
-    }
-  ]
+  "user": {
+    "id": 4,
+    "username": "kiarash",
+    "bio": "Kiarash is sepehrs fav cousin.",
+    "website": "http://GT-BadAss.com",
+    "location": "Atlanta, GA",
+    "picture_thumb": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/015/Screen_Shot_2015-12-02_at_10.38.51_PM.png?1449176752",
+    "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/015/Screen_Shot_2015-12-02_at_10.38.51_PM.png?1449176752",
+    "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/015/Screen_Shot_2015-12-02_at_10.38.51_PM.png?1449176752",
+    "profile_id": 15,
+    "tags": "atlanta, ga-tech university, engineer"
+  }
 }
 ```
 
@@ -246,7 +239,7 @@ If unsuccessful, you will receive:
 }
 ```
 
-###<a name="users-retrieve-all"></a>Retrieve All Profiles
+###<a name="users-retrieve-all"></a>Retrieve All Users
 
 This request will allow a user to retrieve profiles of all users, paginated, as long as an `Auth-Token` is provided. Each request will provide 20 profiles at most. Providing a `page` param will allow you to get consequent profiles. For first 20 users `page` can be empty since default value is `1`. For second 20 users (eg. users 21-40) `page` should be `2` and so on.
 
@@ -270,9 +263,10 @@ If successful, you will receive:
 {
   "page": 1,
   "page_count": 1,
-  "profiles": [
+  "users": [
     {
       "id": 1,
+      "username": "sepehr",
       "bio": "Arrigatto!",
       "website": "http://sepehr.io",
       "location": "The Universe",
@@ -280,10 +274,11 @@ If successful, you will receive:
       "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/009/sepehr-bali.jpg?1449025389",
       "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/009/sepehr-bali.jpg?1449025389",
       "profile_id": 9,
-      "username": "sepehr"
+      "tags": ""
     },
     {
       "id": 2,
+      "username": "kaveh",
       "bio": "Kaveh is illest of 'em all.",
       "website": "http://kaveh.io",
       "location": "Washington, DC",
@@ -291,7 +286,31 @@ If successful, you will receive:
       "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/012/yazd.jpg?1449069611",
       "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/012/yazd.jpg?1449069611",
       "profile_id": 12,
-      "username": "kaveh"
+      "tags": ""
+    },
+    {
+      "id": 4,
+      "username": "kiarash",
+      "bio": "Kiarash is sepehrs fav cousin.",
+      "website": "http://GT-BadAss.com",
+      "location": "Atlanta, GA",
+      "picture_thumb": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/015/Screen_Shot_2015-12-02_at_10.38.51_PM.png?1449176752",
+      "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/015/Screen_Shot_2015-12-02_at_10.38.51_PM.png?1449176752",
+      "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/015/Screen_Shot_2015-12-02_at_10.38.51_PM.png?1449176752",
+      "profile_id": 15,
+      "tags": "atlanta, ga-tech university, engineer"
+    },
+    {
+      "id": 8,
+      "username": "hootan",
+      "bio": "Hootan is from Dastjerd!",
+      "website": "http://hootan.com",
+      "location": "Atlanta",
+      "picture_thumb": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/019/Sepehr_Profile.jpg?1450035759",
+      "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/019/Sepehr_Profile.jpg?1450035759",
+      "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/019/Sepehr_Profile.jpg?1450035759",
+      "profile_id": 19,
+      "tags": "hootan profile pic"
     }
   ]
 }
@@ -425,19 +444,18 @@ If successful, you will receive:
     
 ```json
 {
-  "profile": [
-    {
-      "id": 12,
-      "bio": "Kaveh is illest of 'em all.",
-      "website": "http://kaveh.io",
-      "location": "Washington, DC",
-      "picture_thumb": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/012/yazd.jpg?1449069611",
-      "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/012/yazd.jpg?1449069611",
-      "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/012/yazd.jpg?1449069611",
-      "user_id": 2,
-      "username": "kaveh"
-    }
-  ]
+  "profile": {
+    "id": 19,
+    "bio": "Hootan is from Dastjerd!",
+    "website": "http://hootan.com",
+    "location": "Atlanta",
+    "picture_thumb": "http://abstract-test.s3.amazonaws.com/profiles/thumb/000/000/019/Sepehr_Profile.jpg?1450035759",
+    "picture_medium": "http://abstract-test.s3.amazonaws.com/profiles/medium/000/000/019/Sepehr_Profile.jpg?1450035759",
+    "picture_large": "http://abstract-test.s3.amazonaws.com/profiles/large/000/000/019/Sepehr_Profile.jpg?1450035759",
+    "user_id": 8,
+    "username": "hootan",
+    "tags": "hootan profile pic"
+  }
 }
 ```
 

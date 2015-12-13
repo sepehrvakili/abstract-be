@@ -4,7 +4,6 @@ class ProfilesController < ApplicationController
 	def create
 		@profile = current_user.build_profile(profile_params)
 		if @profile.save
-			@profile = build_profiles([@profile])
 			render :create, status: :created
 		else
 			render json: { errors: @profile.errors.full_messages },
