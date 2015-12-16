@@ -2,12 +2,16 @@ class ProfilesController < ApplicationController
 	before_action :authenticate_user!
 
 	def create
-		@profile = current_user.build_profile(profile_params)
-		if @profile.save
-			render :create, status: :created
+		if current_user.profile.present?
+			render json: { errors: "A profile already exists for #{current_user.firstname}."}, status: :unprocessable_entity
 		else
-			render json: { errors: @profile.errors.full_messages },
-				status: :unprocessable_entity
+			@profile = current_user.build_profile(profile_params)
+			if @profile.save
+				render :create, status: :created
+			else
+				render json: { errors: @profile.errors.full_messages },
+					status: :unprocessable_entity
+			end
 		end
 	end
 
