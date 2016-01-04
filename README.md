@@ -1,4 +1,4 @@
-# Abstract App API :: XO
+# Abstract App API
 <hr>
 
 Welcome to the Abstract App API documentation.
